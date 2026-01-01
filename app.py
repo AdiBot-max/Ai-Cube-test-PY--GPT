@@ -8,7 +8,14 @@ import torch.nn.functional as F
 app = FastAPI()
 
 # -------- LOAD MODEL --------
-checkpoint = torch.load("model/tiny_chatbot.pt", map_location="cpu")
+import os
+
+MODEL_PATH = "model/tiny_chatbot.pt"
+
+if not os.path.exists(MODEL_PATH):
+    raise RuntimeError("Model file missing: model/tiny_chatbot.pt")
+
+checkpoint = torch.load(MODEL_PATH, map_location="cpu")
 model = checkpoint["model"]
 word_to_idx = checkpoint["vocab"]
 idx_to_word = {v: k for k, v in word_to_idx.items()}
